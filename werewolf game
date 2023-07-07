@@ -1,0 +1,163 @@
+import random
+from tkinter import *
+roles = ['werewolf1','werewolf2','seer','witch','hunter','villager1','villager2']
+
+
+#tkinter
+root =Tk()
+root.title('werewolf game')
+def begin():
+  start.destroy()
+  button1.pack()
+start = Button(root,text="start",padx=50,pady=50,command=begin)
+start.pack()
+
+#player 1
+def click1():
+  global label1
+  global okb1
+  player1 = roles[random.randint(0,6)]
+  label1=Label(root,text=player1)
+  label1.pack()
+  button1.destroy()
+  roles.remove(player1)
+  okb1 =Button(root,text="Ok",command=ok1)
+  okb1.pack()
+def ok1():
+  label1.destroy()
+  okb1.destroy()
+  button2.pack()
+button1 = Button(root,text="player 1",padx=50,command=click1)
+button1.pack_forget()
+
+
+#player 2
+def click2():
+  global label2
+  global okb2
+  player2 = roles[random.randint(0,5)]
+  label2=Label(root,text=player2)
+  label2.pack()
+  button2.destroy()
+  roles.remove(player2)
+  okb2 =Button(root,text="Ok",command=ok2)
+  okb2.pack()
+def ok2():
+  label2.destroy()
+  okb2.destroy()
+  button3.pack()
+button2 = Button(root,text="player 2",padx=50,command=click2)
+button2.pack_forget()
+
+
+#player 3
+def click3():
+  global label3
+  global okb3
+  player3 = roles[random.randint(0,4)]
+  label3=Label(root,text=player3)
+  label3.pack()
+  button3.destroy()
+  roles.remove(player3)
+  okb3 =Button(root,text="Ok",command=ok3)
+  okb3.pack()
+def ok3():
+  label3.destroy()
+  okb3.destroy()
+  button4.pack()
+button3 = Button(root,text="player 3",padx=50,command=click3)
+button3.pack_forget()
+
+
+#player 4
+def click4():
+  global label4
+  global okb4
+  player4 = roles[random.randint(0,3)]
+  label4=Label(root,text=player4)
+  label4.pack()
+  button4.destroy()
+  roles.remove(player4)
+  okb4 =Button(root,text="Ok",command=ok4)
+  okb4.pack()
+def ok4():
+  label4.destroy()
+  okb4.destroy()
+  button5.pack()
+button4 = Button(root,text="player 4",padx=50,command=click4)
+button4.pack_forget()
+
+
+#player 5
+def click5():
+  global label5
+  global okb5
+  player5 = roles[random.randint(0,2)]
+  label5=Label(root,text=player5)
+  label5.pack()
+  button5.destroy()
+  roles.remove(player5)
+  okb5 =Button(root,text="Ok",command=ok5)
+  okb5.pack()
+def ok5():
+  label5.destroy()
+  okb5.destroy()
+  button6.pack()
+button5 = Button(root,text="player 5",padx=50,command=click5)
+button5.pack_forget()
+
+
+#player 6
+def click6():
+  global label6
+  global okb6
+  player6 = roles[random.randint(0,1)]
+  label6=Label(root,text=player6)
+  label6.pack()
+  button6.destroy()
+  roles.remove(player6)
+  okb6 =Button(root,text="Ok",command=ok6)
+  okb6.pack()
+def ok6():
+  label6.destroy()
+  okb6.destroy()
+  button7.pack()
+button6 = Button(root,text="player 6",padx=50,command=click6)
+button6.pack_forget()
+
+
+#player 7
+def click7():
+  global label7
+  global okb7
+  player7 = roles[0]
+  label7=Label(root,text=player7)
+  label7.pack()
+  button7.destroy()
+  roles.remove(player7)
+  okb7 =Button(root,text="Ok",command=ok7)
+  okb7.pack()
+def ok7():
+  label7.destroy()
+  okb7.destroy()
+button7 = Button(root,text="player 7",padx=50,command=click7)
+button7.pack_forget()
+
+
+
+
+
+
+
+root.mainloop()
+
+
+
+
+
+
+
+
+
+
+

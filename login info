@@ -1,0 +1,59 @@
+from tkinter import *
+root = Tk()
+root.title('login')
+root.geometry('250x200')
+x=-1
+number = 0
+
+Label(root,text='Username').grid(row=0,column=0)
+user = Entry(root,width=20)
+user.grid(row=0,column=1)
+
+
+Label(root,text='password').grid(row=1,column=0)
+password = Entry(root,width=20,show='*',)
+password.grid(row=1,column=1)
+
+
+
+def enter():
+    global number
+    global user_id
+    global pw
+    global x
+    user_id = user.get()
+    pw = password.get()
+    user.delete(0,END)
+    password.delete(0,END)
+    number = number + 1
+    x = x + 1
+
+
+def data():
+    numbertitle = Label(root,text='number')
+    numbertitle.grid(row=3,column=0)
+    Number = Label(root,text=number,)
+    Number.grid(row=4+x,column=0)
+
+    nametitle = Label(root,text='username')
+    nametitle.grid(row=3,column=1)
+    name = Label(root,text=user_id)
+    name.grid(row=4+x,column=1)
+
+    passwordtitle = Label(root,text='password')
+    passwordtitle.grid(row=3,column=2)
+    pin = Label(root,text=pw)
+    pin.grid(row=4+x,column=2)
+
+
+
+
+submit = Button(root,text='enter',command = enter).grid(row=1,column=2)
+show = Button(root,text='show list',command=data).grid(row=2,column=0)
+
+
+
+
+
+
+root.mainloop()
