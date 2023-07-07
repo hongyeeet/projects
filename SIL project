@@ -1,0 +1,251 @@
+from tkinter import *
+from math import *
+import numpy as np
+import random as r
+import re
+from matplotlib.figure import Figure
+from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
+
+
+root = Tk()
+root.title('SIL PROJECT')
+root.geometry('800x600')
+frame = Frame(root)
+frame.pack(fill="both", expand=True)
+
+
+def clearFrame():
+    for widget in frame.winfo_children():
+       widget.destroy()
+
+
+def getans():
+    try: 
+        answer = Label(frame,text='                               ')
+        answer.place(x=650,y=50)
+        no1get=float(no1.get())
+        no2get=float(no2.get())
+        opget=operations.get(ACTIVE)
+        if type(no1get) and type(no2get) == float:
+            if opget == '+':
+                solution = float(no1get) + float(no2get)
+                answer = Label(frame,text=round(solution,5))
+                answer.place(x=650,y=50)
+            elif opget == '-':
+                solution = float(no1get) - float(no2get)
+                answer = Label(frame,text=round(solution,5))
+                answer.place(x=650,y=50)
+            elif opget == 'X':
+                solution = float(no1get)*float(no2get)
+                answer = Label(frame,text=round(solution,5))
+                answer.place(x=650,y=50)
+            elif opget == '÷':
+                solution = float(no1get)/float(no2get)
+                answer = Label(frame,text=round(solution,5))
+                answer.place(x=650,y=50)
+    except ValueError:
+        answer = Label(frame,text='ERROR')
+        answer.place(x=650,y=50)
+    
+
+def solvesimul():
+    try:
+        x = Label(frame,font=('Helvetica bold',15),text='                      ')
+        y = Label(frame,font=('Helvetica bold',15),text='                      ')
+        Label(frame,font=('Helvetica bold',25),text='                     ').place(x=200,y=300)
+        x.place(x=200,y=300)
+        y.place(x=400,y=300)
+        A1get=float(A1.get())
+        A2get=float(A2.get())
+        B1get=float(B1.get())
+        B2get=float(B2.get())
+        C1get=float(C1.get())
+        C2get=float(C2.get())
+        AB = [[A1get,B1get],[A2get,B2get]]
+        ABinv = np.linalg.inv(AB)
+        C = [[C1get],[C2get]]
+        xy = ABinv.dot(C)
+        xval= str(round(float(xy[0][0]),3))
+        yval= str(round(float(xy[1][0]),3))
+        x = Label(frame,font=('Helvetica bold',15),text='X='+ xval)
+        y = Label(frame,font=('Helvetica bold',15),text='Y='+ yval)
+        x.place(x=200,y=300)
+        y.place(x=400,y=300)
+    except ValueError:
+        Label(frame,font=('Helvetica bold',25),text='ERROR').place(x=200,y=300)
+
+
+def solvequad():
+    try :
+        Label(frame,font=('Helvetica bold',25),text='            ').place(x=200,y=300)
+        Label(frame,font=('Helvetica bold',20),text='                                        ').place(x=200,y=300)
+        Label(frame,font=('Helvetica bold',20),text='                                                                ').place(x=120,y=300)
+        x1 = Label(frame,font=('Helvetica bold',15),text='                                                         ').place(x=150,y=200)
+        x2 = Label(frame,font=('Helvetica bold',15),text='                                                         ').place(x=450,y=200)
+        a = float(ax2.get())
+        b = float(bx.get())
+        c = float(Cval.get())
+        discriminent = b**2 - 4*a*c
+    except ValueError:
+        Label(frame,font=('Helvetica bold',25),text='ERROR').place(x=200,y=300)
+    if a == 0:
+        Label(frame,font=('Helvetica bold',20),text='this is a linear equation').place(x=200,y=300)
+    elif discriminent < 0:
+        Label(frame,font=('Helvetica bold',20),text='no solution as discriminent is less than 0').place(x=120,y=300)
+    ans1 = (-b + sqrt(discriminent))/2*a
+    ans2 = (-b - sqrt(discriminent))/2*a
+    x1 = Label(frame,font=('Helvetica bold',15),text='X='+ str(round(ans1,3)))
+    x2 = Label(frame,font=('Helvetica bold',15),text='X='+ str(round(ans2,3)))
+    orsign = Label(frame,font=('Helvetica bold',15),text='or')
+    x1.place(x=150,y=200)
+    x2.place(x=450,y=200)
+    orsign.place(x=325,y=200)
+
+
+def eqngraph(x):
+    eqnget = eqn.get().lower()
+    eqnget = eqnget.replace('^','**').replace('x','*x')
+    if eqnget[0] == '*':
+        eqnget = re.sub(r'\*', '',eqnget, count=1)
+    eqnget = eval(eqnget.format(x))
+    return eqnget
+    
+
+
+def plot():
+    global x,ax,fig
+    
+    rangex1get = int(rangex1.get())
+    rangex2get = int(rangex2.get())
+
+    x = list(range(rangex1get,rangex2get))
+    y  = [eqngraph(i) for i in x]
+    fig = Figure(figsize=(3.8,3.8), dpi=130)
+    ax = fig.add_subplot(111)
+    if ax:
+        ax.clear()
+    ax.plot(x,y)
+    ax.set_xlabel('x')
+    ax.set_ylabel('y')
+    canvas = FigureCanvasTkAgg(fig, master=frame)
+    canvas.draw()
+    canvas.get_tk_widget().place(x=100, y=90)
+    
+
+
+    
+    
+    
+
+def operation():
+    global no1
+    global no2
+    global operations
+    clearFrame()
+    no1 = Entry(frame,width=10)
+    no2= Entry(frame,width=10)
+    no1.place(x=100,y=50)
+    no2.place(x=400,y=50)
+    operations = Listbox(frame,height=4,width=5)
+    operations.place(x=250,y=40)
+    operations.insert(END,'+')
+    operations.insert(END,'-')
+    operations.insert(END,'X')
+    operations.insert(END,'÷')
+    equal = Label(frame,text='=')
+    equal.place(x=550,y=50)
+    solve = Button(frame,text='solve',command=getans)
+    solve.place(x=600,y=150)
+   
+
+def simuleqn():
+    global A1,A2,B1,B2,C1,C2
+    clearFrame()
+    #input
+    A1 = Entry(frame,width=10)
+    A2 = Entry(frame,width=10)
+    B1= Entry(frame,width=10)
+    B2= Entry(frame,width=10)
+    C1= Entry(frame,width=10)
+    C2= Entry(frame,width=10)
+    A1.place(x=100,y=50)
+    A2.place(x=100,y=150)
+    B1.place(x=300,y=50)
+    B2.place(x=300,y=150)
+    C1.place(x=475,y=50)
+    C2.place(x=475,y=150)
+    #signs
+    x1 = Label(frame,text='x')
+    x2 = Label(frame,text='x')
+    y1 = Label(frame,text='y')
+    y2 = Label(frame,text='y')
+    x1.place(x=155,y=50)
+    x2.place(x=155,y=150)
+    y1.place(x=355,y=50)
+    y2.place(x=355,y=150)
+    Label(frame,text='+').place(x=225,y=50)
+    Label(frame,text='+').place(x=225,y=150)
+    Label(frame,text='=').place(x=400,y=50)
+    Label(frame,text='=').place(x=400,y=150)
+    #output
+    enter = Button(frame,text='enter',command=solvesimul)
+    enter.place(x=600,y=200)
+
+
+def qudratic():
+    global ax2,bx,Cval
+    clearFrame()
+    #input
+    ax2 = Entry(frame,width=10)
+    bx = Entry(frame,width=10)
+    Cval= Entry(frame,width=10)
+    ax2.place(x=100,y=50)
+    bx.place(x=300,y=50)
+    Cval.place(x=500,y=50)
+    #signs
+    x2 = Label(frame,text='x²')
+    x1 = Label(frame,text='x')
+    x2.place(x=150,y=50)
+    x1.place(x=355,y=50)
+    Label(frame,text='+').place(x=225,y=50)
+    Label(frame,text='+').place(x=425,y=50)
+    Label(frame,text='=').place(x=600,y=50)
+    zero = Label(frame,text='0')
+    zero.place(x=675,y=50)
+    enter = Button(frame,text='enter',command=solvequad)
+    enter.place(x=700,y=100)
+
+def graph():
+    global eqn,rangex1,rangex2
+    clearFrame()
+    eqn = Entry(frame,width=30)
+    eqn.place(x=100,y=50)
+    Label(text='Y=').place(x=80,y=46)
+    Button(command=plot,text='enter').place(x=700,y=46)
+    rangex1 = Entry(frame,width=10)
+    rangex1.place(x=350,y=50)
+
+    rangex2 = Entry(frame,width=10)
+    rangex2.place(x=550,y=50)
+
+    x = Label(text='<           X         <').place(x=430,y=50)
+
+
+
+#main menu
+menubar= Menu(root)
+root.config(menu=menubar)
+option_menu = Menu(menubar,tearoff=0)
+menubar.add_cascade(label='option',menu=option_menu)
+
+#sub menu
+option_menu.add_command(label='operation',command=operation)
+option_menu.add_command(label='simlutaneous equation',command=simuleqn)
+option_menu.add_command(label='qudratic equation',command=qudratic)
+option_menu.add_command(label='graph',command=graph)
+option_menu.add_command(label='clear',command=clearFrame)
+
+
+
+
+root.mainloop()
